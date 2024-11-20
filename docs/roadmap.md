@@ -1,41 +1,20 @@
 # Stack Command - Development Roadmap
 ## Current Work: 
-### Unit Selection System - This is fundamental for an RTS:
-
-- ~~Single unit selection with mouse click~~
-- ~~Multiple unit selection with drag box~~
-- ~~Selection visual feedback~~
-
-
-### Basic Movement System:
-
-- ~~Click-to-move functionality~~
-- ~~Pathfinding on terrain~~
-- ~~Movement animation/feedback~~
-
-
-### Camera Control System:
-
-- RTS-style camera movement
-  - wasd/arrow keyboard control
-  - edge scrolling
-- Zoom functionality
-- Camera rotation
-   - e/q for keyboard rotation
+TBD
 
 ## Epic 1: Core Game Framework
 ### Stories
-1. Set up basic Unity project with required packages[Complete]
+1. ~~Set up basic Unity project with required packages~~
 2. Implement basic grid system for game world
-3. Create basic unit movement system
-4. Implement camera controls and user input handling
+3. ~~Create basic unit movement system~~
+4. ~~Implement camera controls and user input handling~~
 5. Set up basic UI framework
 
 ## Epic 2: Unit System
 ### Stories
-1. Create basic unit prefab with properties[Complete]
-2. Implement unit movement and pathfinding
-3. Create unit selection system
+1. ~~Create basic unit prefab with properties~~
+2. ~~Implement unit movement and pathfinding~~
+3. ~~Create unit selection system~~
 4. Implement basic combat system
 5. Add unit generation timing system
 6. Create unit stacking mechanics
