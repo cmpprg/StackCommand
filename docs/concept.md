@@ -3,7 +3,7 @@
 ## Game Overview
 **Genre:** Real-Time Strategy (RTS)  
 **Platform:** Windows, Linux, Mac  
-**Engine:** Unity  
+**Engine:** Unity 6, 6000.0.26f1
 **Programming Language:** C#  
 
 ## Core Mechanics

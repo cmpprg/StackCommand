@@ -2,15 +2,15 @@
 
 ## Epic 1: Core Game Framework
 ### Stories
-1. Set up basic Unity project with required packages
+1. Set up basic Unity project with required packages[Complete]
 2. Implement basic grid system for game world
 3. Create basic unit movement system
 4. Implement camera controls and user input handling
 5. Set up basic UI framework
 
-## Epic 2: Unit System
+## Epic 2: Unit System[Current]
 ### Stories
-1. Create basic unit prefab with properties
+1. Create basic unit prefab with properties[Complete]
 2. Implement unit movement and pathfinding
 3. Create unit selection system
 4. Implement basic combat system
