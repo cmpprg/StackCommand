@@ -2,9 +2,9 @@
 ## Current Work: 
 ### Unit Selection System - This is fundamental for an RTS:
 
-- Single unit selection with mouse click
-- Multiple unit selection with drag box
-- Selection visual feedback
+- ~~Single unit selection with mouse click~~
+- ~~Multiple unit selection with drag box~~
+- ~~Selection visual feedback~~
 
 
 ### Basic Movement System:
