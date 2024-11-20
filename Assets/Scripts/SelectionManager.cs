@@ -10,22 +10,28 @@ public class SelectionManager : MonoBehaviour
     private Vector3 selectionStartPos;
     private bool isDragging = false;
     
+    [Header("Selection Settings")]
     [SerializeField] private LayerMask selectableLayer;
-    [SerializeField] private Material selectionMaterial; // Assign a material for selection highlight
-    
-    // Selection box visual properties
-    [SerializeField] private RectTransform selectionBoxVisual;
+    [SerializeField] private Material selectionMaterial;
+    [SerializeField] private SelectionBox selectionBox;
+    [SerializeField] private float minDragDistance = 5f;
     
     private void Start()
     {
         mainCamera = Camera.main;
         
-        // Ensure selection box is initially hidden
-        if (selectionBoxVisual != null)
-            selectionBoxVisual.gameObject.SetActive(false);
+        if (selectionBox == null)
+        {
+            Debug.LogError("Selection Box reference not set in Selection Manager!");
+        }
     }
 
     private void Update()
+    {
+        HandleSelection();
+    }
+    
+    private void HandleSelection()
     {
         // Start selection
         if (Input.GetMouseButtonDown(0))
@@ -33,10 +39,10 @@ public class SelectionManager : MonoBehaviour
             selectionStartPos = Input.mousePosition;
             isDragging = false;
             
-            // Single unit selection check
-            if (!Input.GetKey(KeyCode.LeftShift)) // If shift isn't held, clear previous selection
+            if (!Input.GetKey(KeyCode.LeftShift))
                 DeselectAll();
                 
+            // Single unit selection
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, selectableLayer))
             {
@@ -51,9 +57,14 @@ public class SelectionManager : MonoBehaviour
         // Update selection box
         if (Input.GetMouseButton(0))
         {
-            if ((Input.mousePosition - selectionStartPos).magnitude > 5f)
+            Vector3 dragDelta = Input.mousePosition - selectionStartPos;
+            if (dragDelta.magnitude > minDragDistance)
             {
-                isDragging = true;
+                if (!isDragging)
+                {
+                    isDragging = true;
+                    selectionBox.Show();
+                }
                 UpdateSelectionBox();
             }
         }
@@ -64,14 +75,34 @@ public class SelectionManager : MonoBehaviour
             if (isDragging)
             {
                 SelectUnitsInBox();
+                selectionBox.Hide();
             }
-            
-            // Hide selection box
-            if (selectionBoxVisual != null)
-                selectionBoxVisual.gameObject.SetActive(false);
-            
             isDragging = false;
         }
+    }
+    
+    private void UpdateSelectionBox()
+    {
+        Vector2 mousePos = Input.mousePosition;
+        Vector2 boxStart = selectionStartPos;
+        
+        // Calculate corners
+        Vector2 bottomLeft = new Vector2(
+            Mathf.Min(boxStart.x, mousePos.x),
+            Mathf.Min(boxStart.y, mousePos.y)
+        );
+        Vector2 topRight = new Vector2(
+            Mathf.Max(boxStart.x, mousePos.x),
+            Mathf.Max(boxStart.y, mousePos.y)
+        );
+        
+        // Calculate size and center position
+        Vector2 size = topRight - bottomLeft;
+        Vector2 center = bottomLeft + size / 2f;
+        
+        // Update selection box UI
+        selectionBox.UpdateSize(size);
+        selectionBox.UpdatePosition(center);
     }
     
     private void SelectUnit(Unit unit)
@@ -79,7 +110,6 @@ public class SelectionManager : MonoBehaviour
         if (!selectedUnits.Contains(unit))
         {
             selectedUnits.Add(unit);
-            // Add visual feedback for selection (e.g., highlight effect)
             Renderer renderer = unit.GetComponent<Renderer>();
             if (renderer != null && selectionMaterial != null)
             {
@@ -93,12 +123,10 @@ public class SelectionManager : MonoBehaviour
         if (selectedUnits.Contains(unit))
         {
             selectedUnits.Remove(unit);
-            // Remove visual feedback
             Renderer renderer = unit.GetComponent<Renderer>();
             if (renderer != null)
             {
-                // Reset to original material (you'll need to store this)
-                renderer.material = unit.GetComponent<Unit>().DefaultMaterial;
+                renderer.material = unit.DefaultMaterial;
             }
         }
     }
@@ -110,23 +138,10 @@ public class SelectionManager : MonoBehaviour
             Renderer renderer = unit.GetComponent<Renderer>();
             if (renderer != null)
             {
-                renderer.material = unit.GetComponent<Unit>().DefaultMaterial;
+                renderer.material = unit.DefaultMaterial;
             }
         }
         selectedUnits.Clear();
-    }
-    
-    private void UpdateSelectionBox()
-    {
-        if (selectionBoxVisual == null) return;
-        
-        selectionBoxVisual.gameObject.SetActive(true);
-        
-        float width = Input.mousePosition.x - selectionStartPos.x;
-        float height = Input.mousePosition.y - selectionStartPos.y;
-        
-        selectionBoxVisual.sizeDelta = new Vector2(Mathf.Abs(width), Mathf.Abs(height));
-        selectionBoxVisual.anchoredPosition = selectionStartPos + new Vector3(width/2, height/2, 0);
     }
     
     private void SelectUnitsInBox()
@@ -134,7 +149,6 @@ public class SelectionManager : MonoBehaviour
         Vector2 min = Vector2.Min(selectionStartPos, Input.mousePosition);
         Vector2 max = Vector2.Max(selectionStartPos, Input.mousePosition);
         
-        // Find all units in selection box
         foreach (Unit unit in FindObjectsOfType<Unit>())
         {
             Vector3 screenPos = mainCamera.WorldToScreenPoint(unit.transform.position);
@@ -147,7 +161,6 @@ public class SelectionManager : MonoBehaviour
         }
     }
     
-    // Public method to get currently selected units
     public List<Unit> GetSelectedUnits()
     {
         return selectedUnits;
