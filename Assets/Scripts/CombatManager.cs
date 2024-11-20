@@ -92,7 +92,7 @@ public class CombatManager : MonoBehaviour
         if (!ValidateAttack(attacker, target))
             return;
 
-        Debug.Log($"Adding engagement for {unit.name}");
+        Debug.Log($"Adding engagement for {attacker.name}");
         // Start combat engagement
         currentEngagements[attacker] = target;
         
