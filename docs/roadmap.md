@@ -11,14 +11,17 @@
 
 - ~~Click-to-move functionality~~
 - ~~Pathfinding on terrain~~
-- Movement animation/feedback
+- ~~Movement animation/feedback~~
 
 
 ### Camera Control System:
 
-- RTS-style camera movement with edge scrolling
+- RTS-style camera movement
+  - wasd/arrow keyboard control
+  - edge scrolling
 - Zoom functionality
-- Camera rotation (optional)
+- Camera rotation
+   - e/q for keyboard rotation
 
 ## Epic 1: Core Game Framework
 ### Stories

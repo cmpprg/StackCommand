@@ -16,12 +16,17 @@
 
 #### Unit Properties
 - Range attack capability
+- Can perform a kamikaze manuever
+  - This will take the enemy stack down by 1. Needs more thought and tuning. Maybe 2 kamikaze takes stack down by 1
 - Line of sight based on stack height
+  - a 2 stack can not shoot through a 2 stack. A 2 stack can shoot over a 1 stack.
 - Cannot shoot through higher stacks
-- Attributes upgrade with each stack level:
-  - Fire range
-  - Firepower
-  - Defense
+- Attributes change/upgrade with each stack level:
+  - Range (up)
+  - Firepower (up)
+  - Defense (up)
+  - Speed (down)
+  - Manueverablity (down)
   - Other stats TBD
 
 ### Buildings
@@ -57,12 +62,14 @@
 
 ## Game Flow
 1. Match starts with home base and 5 units
-2. Players expand territory and gather resources (units)
+2. Players expand territory and generate resources (units)
 3. Strategic decisions:
-   - Unit production
-   - Building placement
-   - Stack management
-   - Territory control
+  - Unit production
+  - Building placement
+  - Stack management
+  - Territory control
+    - Do we want another victory condition. 51% of territory?
+  
 4. Victory achieved by destroying enemy base
 
 ## Visual Style
