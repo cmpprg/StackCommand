@@ -9,8 +9,8 @@
 
 ### Basic Movement System:
 
-- Click-to-move functionality
-- Pathfinding on terrain
+- ~~Click-to-move functionality~~
+- ~~Pathfinding on terrain~~
 - Movement animation/feedback
 
 
