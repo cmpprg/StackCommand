@@ -119,13 +119,21 @@ public class Unit : MonoBehaviour
     // Combat-related methods
     public bool CanAttack(Unit target)
     {
-        return combatStats.CanAttack() && combatStats.CanTargetUnit(transform.position, target);
+        return combatStats.CanAttack() &&
+            combatStats.CanTargetUnit(transform.position, target);
     }
+
 
     public void StartAttack()
     {
         combatStats.isAttacking = true;
         combatStats.currentCooldown = combatStats.attackCooldown;
+    }
+
+    public void CompleteAttack()
+    {
+        // Cooldown remains, but isAttacking is reset
+        combatStats.isAttacking = false;
     }
 
     public void EndAttack()

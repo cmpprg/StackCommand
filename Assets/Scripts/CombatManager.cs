@@ -67,18 +67,24 @@ public class CombatManager : MonoBehaviour
                 unitsToRemove.Add(attacker);
                 continue;
             }
-
-            ProcessCombat(attacker, target);
+            
+            // Check if current attacker can attack
+            if (attacker.CanAttack(target))
+            {
+                // set isAttacking to true and start cooldown
+                attacker.StartAttack();
+                // Process combat scenario
+                ProcessCombat(attacker, target);
+            }
         }
 
         // Clean up invalid engagements
         foreach (var unit in unitsToRemove)
         {
+            Debug.Log($"Removing engagement for {unit.name}");
             currentEngagements.Remove(unit);
+            unit.EndAttack();
         }
-
-        // Clean up expired effects
-        CleanupEffects();
     }
 
     public void InitiateAttack(Unit attacker, Unit target)
@@ -86,9 +92,9 @@ public class CombatManager : MonoBehaviour
         if (!ValidateAttack(attacker, target))
             return;
 
+        Debug.Log($"Adding engagement for {unit.name}");
         // Start combat engagement
         currentEngagements[attacker] = target;
-        attacker.StartAttack();
         
         // Trigger combat started event
         onCombatStarted.Invoke(attacker, target);
@@ -119,11 +125,22 @@ public class CombatManager : MonoBehaviour
         if (attacker == null || target == null)
             return false;
 
-        return attacker.CanAttack(target);
+        // Only check fundamental engagement validity:
+        // - Units exist
+        // - Within maximum possible engagement range
+        // - Line of sight exists (if that's a requirement)
+        // - Any other strategic conditions
+        
+        float maxRange = attacker.CurrentRange;
+        float distance = Vector3.Distance(attacker.transform.position, target.transform.position);
+        
+        return distance <= maxRange * 1.2f; // Maybe add a small buffer for movement
     }
 
     private void ProcessCombat(Unit attacker, Unit target)
     {
+        
+
         CombatStats attackerStats = attacker.GetCombatStats();
         CombatStats targetStats = target.GetCombatStats();
 
@@ -135,6 +152,9 @@ public class CombatManager : MonoBehaviour
 
         // Trigger damage event
         onDamageDealt.Invoke(target, damage);
+
+        // Complete the attack (reset isAttacking, leaving cooldown in place)
+        attacker.CompleteAttack();
     }
 
     private float CalculateDamage(float attackPower, float defense)
