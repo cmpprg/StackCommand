@@ -24,7 +24,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 15387
+  controlID: 16004
   draggingID: 0
 --- !u!114 &2
 MonoBehaviour:
@@ -72,7 +72,7 @@ MonoBehaviour:
   m_TextureFilterMode: 0
   m_TextureHideFlags: 61
   m_RenderIMGUI: 1
-  m_EnterPlayModeBehavior: 1
+  m_EnterPlayModeBehavior: 0
   m_UseMipMap: 0
   m_VSyncEnabled: 0
   m_Gizmos: 0
@@ -106,18 +106,18 @@ MonoBehaviour:
       y: 21
       width: 828.5
       height: 536.5
-    m_Scale: {x: 2.2005486, y: 2.2005486}
-    m_Translation: {x: 402.08017, y: 275.8459}
+    m_Scale: {x: 2.377845, y: 2.377845}
+    m_Translation: {x: 421.42987, y: 235.47664}
     m_MarginLeft: 0
     m_MarginRight: 0
     m_MarginTop: 0
     m_MarginBottom: 0
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
-      x: -182.71814
-      y: -125.35323
-      width: 376.497
-      height: 243.80284
+      x: -177.23184
+      y: -99.02943
+      width: 348.4247
+      height: 225.62445
     m_MinimalGUI: 1
   m_defaultScale: 2
   m_LastWindowPixelSize: {x: 1657, y: 1115}
@@ -150,7 +150,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 15388
+  controlID: 16005
   draggingID: 0
 --- !u!114 &4
 MonoBehaviour:
@@ -176,7 +176,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 50}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 15389
+  controlID: 16006
   draggingID: 0
 --- !u!114 &5
 MonoBehaviour:
@@ -226,7 +226,7 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 102
+    y: 24
     width: 264.5
     height: 557.5
   m_SerializedDataModeController:
@@ -243,8 +243,8 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
-      m_LastClickedID: 0
+      m_SelectedIDs: 32aaffff
+      m_LastClickedID: -21966
       m_ExpandedIDs: 32aaffff00b1ffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
@@ -318,8 +318,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Scene\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 265.5
-    y: 102
+    x: 266.5
+    y: 24
     width: 828.5
     height: 557.5
   m_SerializedDataModeController:
@@ -792,9 +792,9 @@ MonoBehaviour:
   m_AudioPlay: 0
   m_DebugDrawModesUseInteractiveLightBakingData: 0
   m_Position:
-    m_Target: {x: 0.791, y: 0.10000001, z: 0.72299993}
+    m_Target: {x: 1.0752003, y: 0.37781006, z: 0.7467974}
     speed: 2
-    m_Value: {x: 0.791, y: 0.10000001, z: 0.72299993}
+    m_Value: {x: 1.0752003, y: 0.37781006, z: 0.7467974}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -840,13 +840,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 1
   m_Rotation:
-    m_Target: {x: 0.17762999, y: 0.39195424, z: -0.07741483, w: 0.899348}
+    m_Target: {x: 0.6442822, y: -0.024079144, z: 0.020301469, w: 0.764143}
     speed: 2
-    m_Value: {x: 0.17762995, y: 0.39195415, z: -0.07741482, w: 0.8993478}
+    m_Value: {x: 0.6442803, y: -0.024079071, z: 0.020301409, w: 0.7641407}
   m_Size:
-    m_Target: 1.9029201
+    m_Target: 1.5311862
     speed: 2
-    m_Value: 1.9029201
+    m_Value: 1.5311862
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -864,7 +864,7 @@ MonoBehaviour:
     m_FarClip: 10000
     m_DynamicClip: 1
     m_OcclusionCulling: 0
-  m_LastSceneViewRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LastSceneViewRotation: {x: 0.6677865, y: 0.079852946, z: -0.07240283, w: 0.73650885}
   m_LastSceneViewOrtho: 1
   m_Viewpoint:
     m_SceneView: {fileID: 8}
@@ -1079,7 +1079,7 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 685.5
+    y: 607.5
     width: 1095
     height: 250.5
   m_SerializedDataModeController:
@@ -1141,8 +1141,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Inspector\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 1096
-    y: 102
+    x: 1097
+    y: 24
     width: 415
     height: 834
   m_SerializedDataModeController:
@@ -1162,7 +1162,7 @@ MonoBehaviour:
     m_CachedPref: 160
     m_ControlHash: -371814159
     m_PrefName: Preview_InspectorPreview
-  m_LastInspectedObjectInstanceID: 48460
+  m_LastInspectedObjectInstanceID: -1
   m_LastVerticalScrollValue: 0
   m_GlobalObjectId: 
   m_InspectorMode: 0

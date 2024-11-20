@@ -124,7 +124,7 @@ public class SelectionManager : MonoBehaviour
         Vector2 min = Vector2.Min(selectionStartPos, Input.mousePosition);
         Vector2 max = Vector2.Max(selectionStartPos, Input.mousePosition);
         
-        foreach (UnitSelection unitSelection in FindObjectsOfType<UnitSelection>())
+        foreach (UnitSelection unitSelection in FindObjectsByType<UnitSelection>(FindObjectsSortMode.None))
         {
             Vector3 screenPos = mainCamera.WorldToScreenPoint(unitSelection.transform.position);
             

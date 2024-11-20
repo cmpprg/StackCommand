@@ -6,18 +6,27 @@ public class Unit : MonoBehaviour
 {
     [Header("Unit Properties")]
     [SerializeField] private int maxStackHeight = 10;
+    [SerializeField] private float moveSpeed = 5f;
+    
+    [Header("Combat Properties")]
     [SerializeField] private float baseRange = 5f;
     [SerializeField] private float baseFirepower = 10f;
     [SerializeField] private float baseDefense = 5f;
-    [SerializeField] private float moveSpeed = 5f;
     
     [Header("Stack Properties")]
     [SerializeField] private float heightPerStack = 0.5f;
     private int currentStackHeight = 1;
 
-    // NavMesh properties
+    // Component references
     private NavMeshAgent agent;
+    private CombatStats combatStats;
+
+    // Properties
     public bool IsMoving => agent && !agent.isStopped && agent.remainingDistance > agent.stoppingDistance;
+    public int CurrentStackHeight => currentStackHeight;
+    public float CurrentRange => combatStats.range;
+    public float CurrentFirepower => combatStats.firepower;
+    public float CurrentDefense => combatStats.defense;
 
     private void Awake()
     {
@@ -31,6 +40,11 @@ public class Unit : MonoBehaviour
         }
         
         UpdateStats();
+    }
+
+    private void Update()
+    {
+        combatStats.UpdateCooldown(Time.deltaTime);
     }
 
     public void SetDestination(Vector3 destination)
@@ -79,14 +93,17 @@ public class Unit : MonoBehaviour
 
     private void UpdateStats()
     {
-        // Scale stats based on stack height
         float heightMultiplier = 1f + (currentStackHeight - 1) * 0.2f; // 20% increase per stack
         
-        currentRange = baseRange * heightMultiplier;
-        currentFirepower = baseFirepower * heightMultiplier;
-        currentDefense = baseDefense * heightMultiplier;
+        // Update combat stats with stack multipliers
+        combatStats = new CombatStats(
+            baseRange * heightMultiplier,
+            baseFirepower * heightMultiplier,
+            baseDefense * heightMultiplier,
+            currentStackHeight
+        );
 
-        // Update agent speed based on stack height (optional)
+        // Update agent speed based on stack height
         if (agent != null)
         {
             agent.speed = moveSpeed * (1f / Mathf.Sqrt(currentStackHeight)); // Bigger stacks move slower
@@ -99,13 +116,30 @@ public class Unit : MonoBehaviour
         return (currentStackHeight - 1) * heightPerStack;
     }
 
-    // Properties to access current stats
-    public int CurrentStackHeight => currentStackHeight;
-    public float CurrentRange => currentRange;
-    public float CurrentFirepower => currentFirepower;
-    public float CurrentDefense => currentDefense;
+    // Combat-related methods
+    public bool CanAttack(Unit target)
+    {
+        return combatStats.CanAttack() && combatStats.CanTargetUnit(transform.position, target);
+    }
 
-    private float currentRange;
-    private float currentFirepower;
-    private float currentDefense;
+    public void StartAttack()
+    {
+        combatStats.isAttacking = true;
+        combatStats.currentCooldown = combatStats.attackCooldown;
+    }
+
+    public void EndAttack()
+    {
+        combatStats.isAttacking = false;
+    }
+
+    public bool IsAttacking()
+    {
+        return combatStats.isAttacking;
+    }
+
+    public CombatStats GetCombatStats()
+    {
+        return combatStats;
+    }
 }

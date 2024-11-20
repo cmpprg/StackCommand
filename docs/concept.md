@@ -44,13 +44,15 @@
 
 #### Unit Fuser
 - Creates specialized unit formations
-- Different fusion patterns available
+- Different standard fusion patterns available
+  - User will be able to create custom patterns in time.
 - Cost: TBD units
 
 #### Unit Stacker
 - Combines units vertically
 - Upgrades unit capabilities
 - Maximum stack: 10 units
+- Once a unit is stacked it is considered 1 unit. Can not be unstacked.
 - Cost: TBD units
 
 ### Territory Control

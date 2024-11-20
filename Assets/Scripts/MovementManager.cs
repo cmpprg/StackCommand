@@ -6,7 +6,7 @@ public class MovementManager : MonoBehaviour
 {
     [Header("Input Settings")]
     [SerializeField] private LayerMask terrainLayer;
-    [SerializeField] private float minClickDistance = 0.1f;
+    // [SerializeField] private float minClickDistance = 0.1f;
     
     [Header("Formation Settings")]
     [SerializeField] private float unitSpacing = 1f;  // Minimum distance between units
@@ -19,7 +19,7 @@ public class MovementManager : MonoBehaviour
 private void Start()
 {
     mainCamera = Camera.main;
-    selectionManager = FindObjectOfType<SelectionManager>();
+    selectionManager = FindAnyObjectByType<SelectionManager>();
     movementMarker = GetComponent<MovementMarker>();
         
     if (!selectionManager)
