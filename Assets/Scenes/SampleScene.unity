@@ -391,7 +391,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   selectionMaterial: {fileID: 2100000, guid: edf80945ab42f405c98c8b2faecff316, type: 2}
-  selectionBoxVisual: {fileID: 438012316}
+  selectionBox: {fileID: 438012319}
+  minDragDistance: 5
 --- !u!4 &381870119
 Transform:
   m_ObjectHideFlags: 0
@@ -837,6 +838,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1245047591 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3307606953055668924, guid: d70848b92a569474fa8e675e2a2de0d8, type: 3}
+  m_PrefabInstance: {fileID: 2529172478642495678}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1245047597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1245047591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16caf66732f5749699dd9ec89ce0d386, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2529172478642495678
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -900,7 +918,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3307606953055668924, guid: d70848b92a569474fa8e675e2a2de0d8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1245047597}
   m_SourcePrefab: {fileID: 100100000, guid: d70848b92a569474fa8e675e2a2de0d8, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

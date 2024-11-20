@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class SelectionManager : MonoBehaviour
 {
     private Camera mainCamera;
-    private List<Unit> selectedUnits = new List<Unit>();
+    private List<UnitSelection> selectedUnits = new List<UnitSelection>();
     
     // Selection box visualization
     private Vector3 selectionStartPos;
@@ -46,15 +46,15 @@ public class SelectionManager : MonoBehaviour
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, selectableLayer))
             {
-                Unit unit = hit.collider.GetComponent<Unit>();
-                if (unit != null)
+                UnitSelection unitSelection = hit.collider.GetComponent<UnitSelection>();
+                if (unitSelection != null)
                 {
-                    SelectUnit(unit);
+                    SelectUnit(unitSelection);
                 }
             }
         }
         
-        // Update selection box
+        // Handle drag selection box
         if (Input.GetMouseButton(0))
         {
             Vector3 dragDelta = Input.mousePosition - selectionStartPos;
@@ -65,7 +65,7 @@ public class SelectionManager : MonoBehaviour
                     isDragging = true;
                     selectionBox.Show();
                 }
-                UpdateSelectionBox();
+                UpdateBoxVisual();
             }
         }
         
@@ -80,66 +80,41 @@ public class SelectionManager : MonoBehaviour
             isDragging = false;
         }
     }
-    
-    private void UpdateSelectionBox()
+
+    private void UpdateBoxVisual()
     {
-        Vector2 mousePos = Input.mousePosition;
-        Vector2 boxStart = selectionStartPos;
+        float width = Input.mousePosition.x - selectionStartPos.x;
+        float height = Input.mousePosition.y - selectionStartPos.y;
         
-        // Calculate corners
-        Vector2 bottomLeft = new Vector2(
-            Mathf.Min(boxStart.x, mousePos.x),
-            Mathf.Min(boxStart.y, mousePos.y)
-        );
-        Vector2 topRight = new Vector2(
-            Mathf.Max(boxStart.x, mousePos.x),
-            Mathf.Max(boxStart.y, mousePos.y)
-        );
-        
-        // Calculate size and center position
-        Vector2 size = topRight - bottomLeft;
-        Vector2 center = bottomLeft + size / 2f;
-        
-        // Update selection box UI
-        selectionBox.UpdateSize(size);
-        selectionBox.UpdatePosition(center);
+        // Update box size and position
+        selectionBox.UpdateSize(new Vector2(Mathf.Abs(width), Mathf.Abs(height)));
+        selectionBox.UpdatePosition(selectionStartPos + new Vector3(width/2, height/2, 0));
     }
-    
-    private void SelectUnit(Unit unit)
+
+    private void SelectUnit(UnitSelection unitSelection)
     {
-        if (!selectedUnits.Contains(unit))
+        if (!selectedUnits.Contains(unitSelection))
         {
-            selectedUnits.Add(unit);
-            Renderer renderer = unit.GetComponent<Renderer>();
-            if (renderer != null && selectionMaterial != null)
-            {
-                renderer.material = selectionMaterial;
-            }
+            selectedUnits.Add(unitSelection);
+            unitSelection.OnSelected();
+            unitSelection.SetSelectionMaterial(selectionMaterial);
         }
     }
     
-    private void DeselectUnit(Unit unit)
+    private void DeselectUnit(UnitSelection unitSelection)
     {
-        if (selectedUnits.Contains(unit))
+        if (selectedUnits.Contains(unitSelection))
         {
-            selectedUnits.Remove(unit);
-            Renderer renderer = unit.GetComponent<Renderer>();
-            if (renderer != null)
-            {
-                renderer.material = unit.DefaultMaterial;
-            }
+            selectedUnits.Remove(unitSelection);
+            unitSelection.OnDeselected();
         }
     }
     
     private void DeselectAll()
     {
-        foreach (Unit unit in selectedUnits)
+        foreach (UnitSelection unitSelection in selectedUnits)
         {
-            Renderer renderer = unit.GetComponent<Renderer>();
-            if (renderer != null)
-            {
-                renderer.material = unit.DefaultMaterial;
-            }
+            unitSelection.OnDeselected();
         }
         selectedUnits.Clear();
     }
@@ -149,19 +124,19 @@ public class SelectionManager : MonoBehaviour
         Vector2 min = Vector2.Min(selectionStartPos, Input.mousePosition);
         Vector2 max = Vector2.Max(selectionStartPos, Input.mousePosition);
         
-        foreach (Unit unit in FindObjectsOfType<Unit>())
+        foreach (UnitSelection unitSelection in FindObjectsOfType<UnitSelection>())
         {
-            Vector3 screenPos = mainCamera.WorldToScreenPoint(unit.transform.position);
+            Vector3 screenPos = mainCamera.WorldToScreenPoint(unitSelection.transform.position);
             
             if (screenPos.x > min.x && screenPos.x < max.x && 
                 screenPos.y > min.y && screenPos.y < max.y)
             {
-                SelectUnit(unit);
+                SelectUnit(unitSelection);
             }
         }
     }
     
-    public List<Unit> GetSelectedUnits()
+    public List<UnitSelection> GetSelectedUnits()
     {
         return selectedUnits;
     }

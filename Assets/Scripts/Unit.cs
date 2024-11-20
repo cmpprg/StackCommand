@@ -13,13 +13,9 @@ public class Unit : MonoBehaviour
     [SerializeField] private float heightPerStack = 0.5f;
     private int currentStackHeight = 1;
 
-    // Selection and movement properties
-    private Material defaultMaterial;
+    // Movement properties
     private Vector3 targetPosition;
     private bool isMoving = false;
-    
-    // Properties
-    public Material DefaultMaterial => defaultMaterial;
     
     // Calculated stats based on stack height
     private float currentRange;
@@ -28,7 +24,6 @@ public class Unit : MonoBehaviour
 
     private void Awake()
     {
-        defaultMaterial = GetComponent<Renderer>()?.material;
         UpdateStats();
     }
 
@@ -57,6 +52,13 @@ public class Unit : MonoBehaviour
             transform.position = position;
             
             UpdateStats();
+            
+            // Notify UnitSelection to update indicator position
+            var selection = GetComponent<UnitSelection>();
+            if (selection != null)
+            {
+                selection.UpdateIndicatorPosition();
+            }
         }
     }
 
@@ -92,7 +94,20 @@ public class Unit : MonoBehaviour
         {
             isMoving = false;
             transform.position = new Vector3(targetPosition.x, transform.position.y, targetPosition.z);
+            
+            // Update selection indicator position after movement
+            var selection = GetComponent<UnitSelection>();
+            if (selection != null && selection.IsSelected)
+            {
+                selection.UpdateIndicatorPosition();
+            }
         }
+    }
+
+    // Helper method to get current height for selection indicator
+    public float GetBaseHeight()
+    {
+        return (currentStackHeight - 1) * heightPerStack;
     }
 
     // Properties to access current stats
