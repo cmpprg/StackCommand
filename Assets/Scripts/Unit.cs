@@ -1,5 +1,7 @@
 using UnityEngine;
+using UnityEngine.AI;
 
+[RequireComponent(typeof(NavMeshAgent))]
 public class Unit : MonoBehaviour
 {
     [Header("Unit Properties")]
@@ -13,25 +15,38 @@ public class Unit : MonoBehaviour
     [SerializeField] private float heightPerStack = 0.5f;
     private int currentStackHeight = 1;
 
-    // Movement properties
-    private Vector3 targetPosition;
-    private bool isMoving = false;
-    
-    // Calculated stats based on stack height
-    private float currentRange;
-    private float currentFirepower;
-    private float currentDefense;
+    // NavMesh properties
+    private NavMeshAgent agent;
+    public bool IsMoving => agent && !agent.isStopped && agent.remainingDistance > agent.stoppingDistance;
 
     private void Awake()
     {
+        agent = GetComponent<NavMeshAgent>();
+        if (agent != null)
+        {
+            agent.speed = moveSpeed;
+            agent.angularSpeed = 360f;
+            agent.acceleration = 8f;
+            agent.stoppingDistance = 0.1f;
+        }
+        
         UpdateStats();
     }
 
-    private void Update()
+    public void SetDestination(Vector3 destination)
     {
-        if (isMoving)
+        if (agent != null && agent.isOnNavMesh)
         {
-            MoveToTarget();
+            agent.SetDestination(destination);
+            agent.isStopped = false;
+        }
+    }
+
+    public void StopMoving()
+    {
+        if (agent != null)
+        {
+            agent.isStopped = true;
         }
     }
 
@@ -70,37 +85,11 @@ public class Unit : MonoBehaviour
         currentRange = baseRange * heightMultiplier;
         currentFirepower = baseFirepower * heightMultiplier;
         currentDefense = baseDefense * heightMultiplier;
-    }
-    
-    // Movement methods
-    public void SetDestination(Vector3 destination)
-    {
-        targetPosition = destination;
-        isMoving = true;
-    }
-    
-    private void MoveToTarget()
-    {
-        // Calculate direction to target
-        Vector3 direction = (targetPosition - transform.position).normalized;
-        direction.y = 0; // Keep unit level with ground
-        
-        // Move towards target
-        transform.position += direction * moveSpeed * Time.deltaTime;
-        
-        // Check if we've reached the target
-        float distanceToTarget = Vector3.Distance(transform.position, targetPosition);
-        if (distanceToTarget < 0.1f)
+
+        // Update agent speed based on stack height (optional)
+        if (agent != null)
         {
-            isMoving = false;
-            transform.position = new Vector3(targetPosition.x, transform.position.y, targetPosition.z);
-            
-            // Update selection indicator position after movement
-            var selection = GetComponent<UnitSelection>();
-            if (selection != null && selection.IsSelected)
-            {
-                selection.UpdateIndicatorPosition();
-            }
+            agent.speed = moveSpeed * (1f / Mathf.Sqrt(currentStackHeight)); // Bigger stacks move slower
         }
     }
 
@@ -115,4 +104,8 @@ public class Unit : MonoBehaviour
     public float CurrentRange => currentRange;
     public float CurrentFirepower => currentFirepower;
     public float CurrentDefense => currentDefense;
+
+    private float currentRange;
+    private float currentFirepower;
+    private float currentDefense;
 }
