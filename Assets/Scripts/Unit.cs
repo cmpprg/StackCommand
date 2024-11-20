@@ -7,11 +7,20 @@ public class Unit : MonoBehaviour
     [SerializeField] private float baseRange = 5f;
     [SerializeField] private float baseFirepower = 10f;
     [SerializeField] private float baseDefense = 5f;
+    [SerializeField] private float moveSpeed = 5f;
     
     [Header("Stack Properties")]
-    [SerializeField] private float heightPerStack = 0.5f; // Height added per stacked unit
+    [SerializeField] private float heightPerStack = 0.5f;
     private int currentStackHeight = 1;
 
+    // Selection and movement properties
+    private Material defaultMaterial;
+    private Vector3 targetPosition;
+    private bool isMoving = false;
+    
+    // Properties
+    public Material DefaultMaterial => defaultMaterial;
+    
     // Calculated stats based on stack height
     private float currentRange;
     private float currentFirepower;
@@ -19,7 +28,16 @@ public class Unit : MonoBehaviour
 
     private void Awake()
     {
+        defaultMaterial = GetComponent<Renderer>()?.material;
         UpdateStats();
+    }
+
+    private void Update()
+    {
+        if (isMoving)
+        {
+            MoveToTarget();
+        }
     }
 
     public bool CanAddToStack()
@@ -50,6 +68,31 @@ public class Unit : MonoBehaviour
         currentRange = baseRange * heightMultiplier;
         currentFirepower = baseFirepower * heightMultiplier;
         currentDefense = baseDefense * heightMultiplier;
+    }
+    
+    // Movement methods
+    public void SetDestination(Vector3 destination)
+    {
+        targetPosition = destination;
+        isMoving = true;
+    }
+    
+    private void MoveToTarget()
+    {
+        // Calculate direction to target
+        Vector3 direction = (targetPosition - transform.position).normalized;
+        direction.y = 0; // Keep unit level with ground
+        
+        // Move towards target
+        transform.position += direction * moveSpeed * Time.deltaTime;
+        
+        // Check if we've reached the target
+        float distanceToTarget = Vector3.Distance(transform.position, targetPosition);
+        if (distanceToTarget < 0.1f)
+        {
+            isMoving = false;
+            transform.position = new Vector3(targetPosition.x, transform.position.y, targetPosition.z);
+        }
     }
 
     // Properties to access current stats
