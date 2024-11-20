@@ -14,15 +14,19 @@ public class MovementManager : MonoBehaviour
     
     private SelectionManager selectionManager;
     private Camera mainCamera;
+    private MovementMarker movementMarker;
     
-    private void Start()
-    {
-        mainCamera = Camera.main;
-        selectionManager = FindObjectOfType<SelectionManager>();
+private void Start()
+{
+    mainCamera = Camera.main;
+    selectionManager = FindObjectOfType<SelectionManager>();
+    movementMarker = GetComponent<MovementMarker>();
         
-        if (!selectionManager)
-            Debug.LogError("MovementManager requires a SelectionManager in the scene!");
-    }
+    if (!selectionManager)
+        Debug.LogError("MovementManager requires a SelectionManager in the scene!");
+    if (!movementMarker)
+        Debug.LogError("MovementManager requires a MovementMarker component!");
+}
 
     private void Update()
     {
@@ -45,6 +49,9 @@ public class MovementManager : MonoBehaviour
     {
         List<UnitSelection> selectedUnits = selectionManager.GetSelectedUnits();
         if (selectedUnits.Count == 0) return;
+
+        // Show marker at target position
+        movementMarker.ShowMarker(targetPosition);
 
         // For a single unit, just move it directly to the target
         if (selectedUnits.Count == 1)
