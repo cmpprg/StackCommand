@@ -128,10 +128,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxStackHeight: 10
+  moveSpeed: 5
   baseRange: 5
   baseFirepower: 10
   baseDefense: 5
-  moveSpeed: 5
   heightPerStack: 0.5
 --- !u!114 &1324079161657320751
 MonoBehaviour:

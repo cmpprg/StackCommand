@@ -11,6 +11,7 @@ public class CombatManager : MonoBehaviour
     
     [Header("Visual Feedback")]
     [SerializeField] private GameObject hitEffectPrefab;
+    [SerializeField] private LaserBeamEffect laserBeamPrefab;
     [SerializeField] private float effectDuration = 0.5f;
 
     // Events for UI and feedback
@@ -145,8 +146,9 @@ public class CombatManager : MonoBehaviour
         CombatStats targetStats = target.GetCombatStats();
 
         float damage = CalculateDamage(attackerStats.firepower, targetStats.defense);
-        
-        // Apply damage and show effect
+
+        // Show laser, apply damage, and show hit effect
+        ShowLaserBeam(attacker, target);
         ApplyDamage(target, damage);
         ShowHitEffect(target.transform.position);
 
@@ -179,6 +181,15 @@ public class CombatManager : MonoBehaviour
             GameObject effect = Instantiate(hitEffectPrefab, position, Quaternion.identity);
             activeEffects.Add(effect);
             Destroy(effect, effectDuration);
+        }
+    }
+
+    private void ShowLaserBeam(Unit attacker, Unit target)
+    {
+        if (laserBeamPrefab != null)
+        {
+            LaserBeamEffect beam = Instantiate(laserBeamPrefab);
+            beam.ShowBeam(attacker.GetWeaponMount(), target.transform.position);
         }
     }
 

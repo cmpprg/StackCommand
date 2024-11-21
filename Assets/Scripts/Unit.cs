@@ -150,4 +150,10 @@ public class Unit : MonoBehaviour
     {
         return combatStats;
     }
+
+    public Transform GetWeaponMount()
+    {
+        // Find and return the nose transform
+        return transform.Find("Nose");
+    }
 }
