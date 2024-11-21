@@ -167,11 +167,12 @@ public class CombatManager : MonoBehaviour
 
     private void ApplyDamage(Unit target, float damage)
     {
-        // Here we'll call the damage handling method on the unit
-        // For now, we'll just output to debug
-        Debug.Log($"Damage dealt to unit: {damage}");
+        target.TakeDamage(damage);
         
-        // TODO: Implement actual damage application when health system is added
+        if (target.GetHealthPercent() <= 0)
+        {
+            onUnitDestroyed.Invoke(target);
+        }
     }
 
     private void ShowHitEffect(Vector3 position)

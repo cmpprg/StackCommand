@@ -17,6 +17,10 @@ public class Unit : MonoBehaviour
     [SerializeField] private float heightPerStack = 0.5f;
     private int currentStackHeight = 1;
 
+    [Header("Health")]
+    [SerializeField] private float maxHealth = 100f;
+    private float currentHealth;
+
     // Component references
     private NavMeshAgent agent;
     private CombatStats combatStats;
@@ -38,6 +42,8 @@ public class Unit : MonoBehaviour
             agent.acceleration = 8f;
             agent.stoppingDistance = 0.1f;
         }
+
+        currentHealth = maxHealth;
         
         UpdateStats();
     }
@@ -155,5 +161,25 @@ public class Unit : MonoBehaviour
     {
         // Find and return the nose transform
         return transform.Find("Nose");
+    }
+
+    public void TakeDamage(float damage)
+    {
+        currentHealth = Mathf.Max(0, currentHealth - damage);
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    public float GetHealthPercent()
+    {
+        return currentHealth / maxHealth;
+    }
+
+    private void Die()
+    {
+        CombatManager.Instance.StopAttack(this);
+        Destroy(gameObject);
     }
 }
