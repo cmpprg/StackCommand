@@ -26,7 +26,7 @@ public class Unit : MonoBehaviour
     private CombatStats combatStats;
 
     // Properties
-    public bool IsMoving => agent && !agent.isStopped && agent.remainingDistance > agent.stoppingDistance;
+
     public int CurrentStackHeight => currentStackHeight;
     public float CurrentRange => combatStats.range;
     public float CurrentFirepower => combatStats.firepower;

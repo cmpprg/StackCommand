@@ -9,7 +9,8 @@ public class UnitStateController : MonoBehaviour
     private NavMeshAgent agent;
 
     // State Parameters
-    public bool IsMoving { get; private set; }
+
+    // unused, remove 
     public bool IsAttacking { get; private set; }
     public Vector3 TargetPosition { get; private set; }
     public Unit TargetUnit { get; private set; }
