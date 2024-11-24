@@ -4,13 +4,29 @@ public class UnitAttackState : UnitBaseState
 {
     private float attackCooldown = 1f;
     private float currentCooldown = 0f;
-    private LaserBeamEffect laserBeamPrefab;
+
+    public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        base.OnStateEnter(animator, stateInfo, layerIndex);
+        
+        // Check range immediately on entering the state
+        if (controller.TargetUnit != null)
+        {
+            float distanceToTarget = Vector3.Distance(animator.transform.position, controller.TargetUnit.transform.position);
+            if (distanceToTarget > unit.AttackRange)
+            {
+                // If out of range, transition to follow state
+                controller.Follow(controller.TargetUnit);
+                return;
+            }
+        }
+    }
 
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         if (controller.TargetUnit == null)
         {
-            animator.SetBool("IsAttacking", false);
+            controller.Stop();
             return;
         }
 
@@ -18,10 +34,11 @@ public class UnitAttackState : UnitBaseState
         Vector3 directionToTarget = (controller.TargetUnit.transform.position - animator.transform.position).normalized;
         animator.transform.rotation = Quaternion.LookRotation(directionToTarget);
 
-        // Check if in range
+        // Check if still in range
         float distanceToTarget = Vector3.Distance(animator.transform.position, controller.TargetUnit.transform.position);
         if (distanceToTarget > unit.AttackRange)
         {
+            // If we're out of range, switch to follow state
             controller.Follow(controller.TargetUnit);
             return;
         }
@@ -40,14 +57,8 @@ public class UnitAttackState : UnitBaseState
     {
         if (controller.TargetUnit != null)
         {
-            // Deal damage
             controller.TargetUnit.TakeDamage(unit.AttackDamage);
-            // Show laser beam effect
             ShowLaserBeam(controller.TargetUnit);
-            // Play attack sound
-            // TODO: Add sound effect
-            // Play hit animation
-            // TODO: Add hit animation
         }
     }
 
@@ -56,7 +67,6 @@ public class UnitAttackState : UnitBaseState
         if (unit.LaserBeamPrefab != null)
         {
             Vector3 targetPoint = target.transform.position;
-
             LaserBeamEffect laser = Instantiate(unit.LaserBeamPrefab);
             laser.ShowBeam(agent.transform, targetPoint);
         }

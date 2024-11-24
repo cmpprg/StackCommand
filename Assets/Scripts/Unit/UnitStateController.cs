@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class UnitStateController : MonoBehaviour
 {
-    private Animator animator;
+private Animator animator;
     private Unit unit;
     
     public Unit TargetUnit { get; private set; }
@@ -19,9 +19,10 @@ public class UnitStateController : MonoBehaviour
         if (target == null || target == unit) return;
         
         TargetUnit = target;
-        animator.SetBool("IsAttacking", true);
+        
         animator.SetBool("IsMoving", false);
         animator.SetBool("IsFollowing", false);
+        animator.SetBool("IsAttacking", true);
     }
 
     public void Follow(Unit target)
@@ -29,18 +30,18 @@ public class UnitStateController : MonoBehaviour
         if (target == null || target == unit) return;
         
         TargetUnit = target;
-        animator.SetBool("IsFollowing", true);
         animator.SetBool("IsAttacking", false);
         animator.SetBool("IsMoving", false);
+        animator.SetBool("IsFollowing", true);
     }
 
     public void MoveTo(Vector3 position)
     {
         TargetPosition = position;
         TargetUnit = null;
-        animator.SetBool("IsMoving", true);
-        animator.SetBool("IsFollowing", false);
         animator.SetBool("IsAttacking", false);
+        animator.SetBool("IsFollowing", false);
+        animator.SetBool("IsMoving", true);
     }
 
     public void Stop()

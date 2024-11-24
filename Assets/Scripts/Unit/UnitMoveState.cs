@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class MoveState : UnitBaseState
+public class UnitMoveState : UnitBaseState
 {
     private bool IsPathValid => agent?.pathStatus != NavMeshPathStatus.PathInvalid;
     private Vector3 currentDestination;
