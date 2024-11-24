@@ -62,17 +62,17 @@ public class UnitStateController : MonoBehaviour
         if (target == null || target == unit) return;
         
         TargetUnit = target;
-        animator.SetBool("IsMoving", true);
-        animator.SetBool("IsFollowing", true);
         animator.SetBool("IsAttacking", false);
+        animator.SetBool("IsFollowing", true);
+        animator.SetBool("IsMoving", false);
     }
 
     public void MoveTo(Vector3 position)
     {
         TargetPosition = position;
         TargetUnit = null;
-        animator.SetBool("IsMoving", true);
         animator.SetBool("IsAttacking", false);
+        animator.SetBool("IsMoving", true);
     }
 
     public void Stop()

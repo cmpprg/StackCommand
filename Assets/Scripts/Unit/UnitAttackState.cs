@@ -9,11 +9,12 @@ public class UnitAttackState : UnitBaseState
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
 
-        Debug.Log("Entering attack state");
+        Debug.Log("UnitAttackState#OnStateEnter");
         
         lastAttackTime = 0f;
         if (agent != null) agent.isStopped = true;
         
+        Debug.Log("UnitAttackState#OnStateEnter - TargetUnit: " + controller.TargetUnit);
         // Ensure we're facing the target
         if (controller.TargetUnit != null)
         {
@@ -57,10 +58,15 @@ public class UnitAttackState : UnitBaseState
     {
         Vector3 direction = (target.position - attacker.position).normalized;
         direction.y = 0; // Keep rotation on horizontal plane
+
         if (direction != Vector3.zero)
         {
             Quaternion lookRotation = Quaternion.LookRotation(direction);
-            attacker.rotation = Quaternion.Slerp(attacker.rotation, lookRotation, Time.deltaTime * 10f);
+            attacker.rotation = Quaternion.RotateTowards(
+                attacker.rotation,
+                lookRotation,
+                agent.angularSpeed * Time.deltaTime
+            );
         }
     }
 }
