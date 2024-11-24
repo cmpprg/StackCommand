@@ -2,7 +2,11 @@ using UnityEngine;
 
 public class UnitStateController : MonoBehaviour
 {
-private Animator animator;
+    private static readonly int MoveTrigger = Animator.StringToHash("Move");
+    private static readonly int AttackTrigger = Animator.StringToHash("Attack");
+    private static readonly int FollowTrigger = Animator.StringToHash("Follow");
+    
+    private Animator animator;
     private Unit unit;
     
     public Unit TargetUnit { get; private set; }
@@ -14,17 +18,21 @@ private Animator animator;
         unit = GetComponent<Unit>();
     }
 
+    public void MoveTo(Vector3 position)
+    {
+        TargetPosition = position;
+        TargetUnit = null;
+        ResetAllTriggers();
+        animator.SetTrigger(MoveTrigger);
+    }
+
     public void Attack(Unit target)
     {
-        Debug.Log("Attack: " + target);
         if (target == null || target == unit) return;
         
         TargetUnit = target;
-        
-        animator.SetBool("IsAttacking", true);
-        Debug.Log("IsAttacking: " + animator.GetBool("IsAttacking"));
-        animator.SetBool("IsMoving", false);
-        animator.SetBool("IsFollowing", false);
+        ResetAllTriggers();
+        animator.SetTrigger(AttackTrigger);
     }
 
     public void Follow(Unit target)
@@ -32,25 +40,21 @@ private Animator animator;
         if (target == null || target == unit) return;
         
         TargetUnit = target;
-        animator.SetBool("IsFollowing", true);
-        animator.SetBool("IsAttacking", false);
-        animator.SetBool("IsMoving", false);
-    }
-
-    public void MoveTo(Vector3 position)
-    {
-        TargetPosition = position;
-        TargetUnit = null;
-        animator.SetBool("IsMoving", true);
-        animator.SetBool("IsAttacking", false);
-        animator.SetBool("IsFollowing", false);
+        ResetAllTriggers();
+        animator.SetTrigger(FollowTrigger);
     }
 
     public void Stop()
     {
         TargetUnit = null;
-        animator.SetBool("IsAttacking", false);
-        animator.SetBool("IsMoving", false);
-        animator.SetBool("IsFollowing", false);
+        ResetAllTriggers();
+        // No need to set a stop trigger - will default to idle
+    }
+    
+    private void ResetAllTriggers()
+    {
+        animator.ResetTrigger(MoveTrigger);
+        animator.ResetTrigger(AttackTrigger);
+        animator.ResetTrigger(FollowTrigger);
     }
 }

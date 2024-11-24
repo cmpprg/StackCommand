@@ -53,18 +53,6 @@ public class UnitMoveState : UnitBaseState
         agent.SetDestination(newDestination);
     }
 
-    public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        if (agent != null)
-        {
-            // Don't stop the agent if we're transitioning to Follow
-            if (!animator.GetBool("IsFollowing"))
-            {
-                agent.isStopped = true;
-            }
-        }
-    }
-
     private bool HasReachedDestination()
     {
         // Consider both distance and velocity for a more accurate "arrived" check
