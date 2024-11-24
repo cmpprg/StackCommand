@@ -8,6 +8,8 @@ public class AttackState : UnitBaseState
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
+
+        Debug.Log("AttackState#OnStateEnter");
         lastAttackTime = 0f;
         
         if (agent != null)

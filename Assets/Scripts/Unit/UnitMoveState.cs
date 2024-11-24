@@ -7,6 +7,7 @@ public class MoveState : UnitBaseState
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
         
+        Debug.Log("MoveState#OnStateEnter");
         if (agent != null)
         {
             agent.isStopped = false;

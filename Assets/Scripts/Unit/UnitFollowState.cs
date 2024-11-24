@@ -8,6 +8,8 @@ public class FollowState : UnitBaseState
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
+
+        Debug.Log("FollowState#OnStateEnter");
         lastPathUpdate = 0f;
         
         if (agent != null)
