@@ -2,25 +2,8 @@ using UnityEngine;
 
 public class UnitAttackState : UnitBaseState
 {
-    private const float ATTACK_INTERVAL = 1f;
-    private float lastAttackTime;
-
-    public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        base.OnStateEnter(animator, stateInfo, layerIndex);
-
-        Debug.Log("UnitAttackState#OnStateEnter");
-        
-        lastAttackTime = 0f;
-        if (agent != null) agent.isStopped = true;
-        
-        Debug.Log("UnitAttackState#OnStateEnter - TargetUnit: " + controller.TargetUnit);
-        // Ensure we're facing the target
-        if (controller.TargetUnit != null)
-        {
-            FaceTarget(animator.transform, controller.TargetUnit.transform);
-        }
-    }
+    private float attackCooldown = 1f;
+    private float currentCooldown = 0f;
 
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -31,42 +14,34 @@ public class UnitAttackState : UnitBaseState
         }
 
         // Update facing direction
-        FaceTarget(animator.transform, controller.TargetUnit.transform);
+        Vector3 directionToTarget = (controller.TargetUnit.transform.position - animator.transform.position).normalized;
+        animator.transform.rotation = Quaternion.LookRotation(directionToTarget);
+
+        // Check if in range
+        float distanceToTarget = Vector3.Distance(animator.transform.position, controller.TargetUnit.transform.position);
+        if (distanceToTarget > unit.AttackRange)
+        {
+            controller.Follow(controller.TargetUnit);
+            return;
+        }
 
         // Handle attack timing
-        if (Time.time - lastAttackTime >= ATTACK_INTERVAL)
+        if (currentCooldown <= 0)
         {
-            if (controller.CanAttack)
-            {
-                controller.PerformAttack();
-                lastAttackTime = Time.time;
-            }
-            else
-            {
-                // Target out of range, switch to follow
-                controller.Follow(controller.TargetUnit);
-            }
+            PerformAttack();
+            currentCooldown = attackCooldown;
         }
+        
+        currentCooldown -= Time.deltaTime;
     }
 
-    public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    private void PerformAttack()
     {
-        controller.StopAttack();
-    }
-
-    private void FaceTarget(Transform attacker, Transform target)
-    {
-        Vector3 direction = (target.position - attacker.position).normalized;
-        direction.y = 0; // Keep rotation on horizontal plane
-
-        if (direction != Vector3.zero)
+        if (controller.TargetUnit != null)
         {
-            Quaternion lookRotation = Quaternion.LookRotation(direction);
-            attacker.rotation = Quaternion.RotateTowards(
-                attacker.rotation,
-                lookRotation,
-                agent.angularSpeed * Time.deltaTime
-            );
+            controller.TargetUnit.TakeDamage(10f); // Fixed damage for now
+            
+            // Optional: Add visual feedback here
         }
     }
 }

@@ -12,7 +12,7 @@ public class UserInputManager : MonoBehaviour
     private SelectionManager selectionManager;
     private Camera mainCamera;
     private MovementMarker movementMarker;
-    private CombatManager combatManager;
+    // private CombatManager combatManager;
 
     private void Start()
     {
@@ -21,7 +21,7 @@ public class UserInputManager : MonoBehaviour
         mainCamera = Camera.main;
         selectionManager = GetComponent<SelectionManager>();
         movementMarker = GetComponent<MovementMarker>();
-        combatManager = GetComponent<CombatManager>();
+        // combatManager = GetComponent<CombatManager>();
         
         ValidateComponents();
     }
@@ -32,8 +32,8 @@ public class UserInputManager : MonoBehaviour
             Debug.LogError("UserInputManager requires a SelectionManager!");
         if (!movementMarker)
             Debug.LogError("UserInputManager requires a MovementMarker component!");
-        if (!combatManager)
-            Debug.LogError("UserInputManager requires a CombatManager component!");
+        // if (!combatManager)
+        //     Debug.LogError("UserInputManager requires a CombatManager component!");
     }
 
     private void Update()

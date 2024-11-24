@@ -9,9 +9,9 @@ public class HealthBarController : MonoBehaviour
     [SerializeField] private Image backgroundImage;
     
     [Header("Color Settings")]
-    [SerializeField] private Color healthyColor = new Color(0.35f, 0.85f, 0.35f); // Softer green
-    [SerializeField] private Color warningColor = new Color(0.85f, 0.85f, 0.35f); // Softer yellow
-    [SerializeField] private Color criticalColor = new Color(0.85f, 0.35f, 0.35f); // Softer red
+    [SerializeField] private Color healthyColor = new Color(0.35f, 0.85f, 0.35f);
+    [SerializeField] private Color warningColor = new Color(0.85f, 0.85f, 0.35f);
+    [SerializeField] private Color criticalColor = new Color(0.85f, 0.35f, 0.35f);
     [SerializeField] private Color backgroundColor = new Color(0.2f, 0.2f, 0.2f, 0.8f);
     
     [Header("Threshold Settings")]
@@ -20,7 +20,7 @@ public class HealthBarController : MonoBehaviour
     
     [Header("Position Settings")]
     [SerializeField] private float heightOffset = 1.5f;
-    [SerializeField] private float smoothSpeed = 5f; // For smooth color transitions
+    [SerializeField] private float smoothSpeed = 5f;
     
     [Header("Visibility Settings")]
     [SerializeField] private float hideAfterFullHealth = 3f;
@@ -30,7 +30,6 @@ public class HealthBarController : MonoBehaviour
     private Unit unit;
     private Canvas canvas;
     private CanvasGroup canvasGroup;
-    private Color currentColor;
     private float hideTimer;
     private float lastHealth = 1f;
 
@@ -53,7 +52,6 @@ public class HealthBarController : MonoBehaviour
     private void InitializeHealthBar()
     {
         healthSlider.value = 1f;
-        currentColor = healthyColor;
         fillImage.color = healthyColor;
         
         if (backgroundImage)
@@ -73,8 +71,9 @@ public class HealthBarController : MonoBehaviour
     {
         if (mainCamera != null)
         {
+            // Simplified positioning - just use unit position plus offset
             Vector3 position = unit.transform.position;
-            position.y += unit.GetBaseHeight() + heightOffset;
+            position.y += heightOffset;
             transform.position = position;
             transform.rotation = mainCamera.transform.rotation;
         }
@@ -84,14 +83,11 @@ public class HealthBarController : MonoBehaviour
     {
         float healthPercent = unit.GetHealthPercent();
         
-        // Smooth health bar value change
         healthSlider.value = Mathf.Lerp(healthSlider.value, healthPercent, Time.deltaTime * smoothSpeed);
         
-        // Update color
         Color targetColor = GetHealthColor(healthPercent);
         fillImage.color = Color.Lerp(fillImage.color, targetColor, Time.deltaTime * smoothSpeed);
         
-        // Reset hide timer if health changed
         if (healthPercent != lastHealth)
         {
             hideTimer = hideAfterFullHealth;
@@ -111,7 +107,6 @@ public class HealthBarController : MonoBehaviour
 
     private void UpdateVisibility()
     {
-        // Hide health bar when full health
         if (healthSlider.value >= 0.999f)
         {
             hideTimer -= Time.deltaTime;

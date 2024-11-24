@@ -9,8 +9,8 @@ public class UnitSelection : MonoBehaviour
     private bool isSelected = false;
 
     [Header("Selection Visuals")]
-    [SerializeField] private GameObject selectionIndicator; // Optional visual ring/highlight
-    [SerializeField] private float indicatorOffset = 0.1f; // Height offset for the indicator
+    [SerializeField] private GameObject selectionIndicator;
+    [SerializeField] private float indicatorOffset = 0.1f;
 
     public bool IsSelected => isSelected;
     public Material DefaultMaterial => defaultMaterial;
@@ -25,7 +25,6 @@ public class UnitSelection : MonoBehaviour
             defaultMaterial = unitRenderer.material;
         }
 
-        // Initialize selection indicator if present
         if (selectionIndicator != null)
         {
             selectionIndicator.SetActive(false);
@@ -36,7 +35,6 @@ public class UnitSelection : MonoBehaviour
     {
         isSelected = true;
         
-        // Show selection indicator if present
         if (selectionIndicator != null)
         {
             selectionIndicator.SetActive(true);
@@ -48,31 +46,28 @@ public class UnitSelection : MonoBehaviour
     {
         isSelected = false;
         
-        // Hide selection indicator
         if (selectionIndicator != null)
         {
             selectionIndicator.SetActive(false);
         }
 
-        // Reset material to default if using material-based highlighting
         if (unitRenderer != null)
         {
             unitRenderer.material = defaultMaterial;
         }
     }
 
-    // Update indicator position when unit moves or changes stack height
+    // Simplified indicator positioning
     public void UpdateIndicatorPosition()
     {
         if (selectionIndicator != null)
         {
             Vector3 position = transform.position;
-            position.y = unit.GetBaseHeight() + indicatorOffset;
+            position.y += indicatorOffset;
             selectionIndicator.transform.position = position;
         }
     }
 
-    // Method to change the selection material (called by SelectionManager)
     public void SetSelectionMaterial(Material selectionMaterial)
     {
         if (unitRenderer != null && selectionMaterial != null)

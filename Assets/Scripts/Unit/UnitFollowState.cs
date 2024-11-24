@@ -11,11 +11,6 @@ public class FollowState : UnitBaseState
 
         Debug.Log("FollowState#OnStateEnter");
         lastPathUpdate = 0f;
-        
-        if (agent != null)
-        {
-            agent.isStopped = false;
-        }
     }
 
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -33,8 +28,10 @@ public class FollowState : UnitBaseState
             lastPathUpdate = Time.time;
 
             // Check if within attack range
-            if (unit.CanAttack(controller.TargetUnit))
+            float distanceToTarget = Vector3.Distance(animator.transform.position, controller.TargetUnit.transform.position);
+            if (distanceToTarget <= unit.AttackRange)
             {
+                animator.SetBool("IsFollowing", false);
                 animator.SetBool("IsAttacking", true);
             }
         }
