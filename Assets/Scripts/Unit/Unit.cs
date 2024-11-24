@@ -125,8 +125,19 @@ public class Unit : MonoBehaviour
     // Combat-related methods
     public bool CanAttack(Unit target)
     {
-        return combatStats.CanAttack() &&
-            combatStats.CanTargetUnit(transform.position, target);
+        if (target == null) return false;
+        return GetCombatStats().CanAttack() && IsInRange(target) && HasLineOfSight(target);
+    }
+
+    private bool IsInRange(Unit target)
+    {
+        float distance = Vector3.Distance(transform.position, target.transform.position);
+        return distance <= CurrentRange;
+    }
+
+    private bool HasLineOfSight(Unit target)
+    {
+        return GetCombatStats().CanTargetUnit(transform.position, target);
     }
 
 

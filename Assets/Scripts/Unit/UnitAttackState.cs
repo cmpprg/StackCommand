@@ -1,51 +1,66 @@
 using UnityEngine;
 
-public class AttackState : UnitBaseState
+public class UnitAttackState : UnitBaseState
 {
-    private float attackInterval = 1f;
+    private const float ATTACK_INTERVAL = 1f;
     private float lastAttackTime;
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
 
-        Debug.Log("AttackState#OnStateEnter");
-        lastAttackTime = 0f;
+        Debug.Log("Entering attack state");
         
-        if (agent != null)
+        lastAttackTime = 0f;
+        if (agent != null) agent.isStopped = true;
+        
+        // Ensure we're facing the target
+        if (controller.TargetUnit != null)
         {
-            agent.isStopped = true;
+            FaceTarget(animator.transform, controller.TargetUnit.transform);
         }
     }
 
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-{
-    if (controller.TargetUnit == null)
     {
-        animator.SetBool("IsAttacking", false);
-        return;
-    }
+        if (controller.TargetUnit == null)
+        {
+            animator.SetBool("IsAttacking", false);
+            return;
+        }
 
-    // Simple look at target
-    animator.transform.LookAt(controller.TargetUnit.transform);
+        // Update facing direction
+        FaceTarget(animator.transform, controller.TargetUnit.transform);
 
-    // Attack logic
-    if (Time.time - lastAttackTime >= attackInterval && unit.CanAttack(controller.TargetUnit))
-    {
-        unit.StartAttack();
-        CombatManager.Instance.InitiateAttack(unit, controller.TargetUnit);
-        lastAttackTime = Time.time;
+        // Handle attack timing
+        if (Time.time - lastAttackTime >= ATTACK_INTERVAL)
+        {
+            if (controller.CanAttack)
+            {
+                controller.PerformAttack();
+                lastAttackTime = Time.time;
+            }
+            else
+            {
+                // Target out of range, switch to follow
+                controller.Follow(controller.TargetUnit);
+            }
+        }
     }
-    else if (!unit.CanAttack(controller.TargetUnit))
-    {
-        // Target out of range, switch to follow
-        animator.SetBool("IsAttacking", false);
-        animator.SetBool("IsFollowing", true);
-    }
-}
 
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        unit.EndAttack();
+        controller.StopAttack();
+    }
+
+    private void FaceTarget(Transform attacker, Transform target)
+    {
+        Vector3 direction = (target.position - attacker.position).normalized;
+        direction.y = 0; // Keep rotation on horizontal plane
+        if (direction != Vector3.zero)
+        {
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            attacker.rotation = Quaternion.Slerp(attacker.rotation, lookRotation, Time.deltaTime * 10f);
+        }
     }
 }

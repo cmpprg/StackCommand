@@ -949,9 +949,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1419897680}
   - component: {fileID: 1419897679}
-  - component: {fileID: 1419897678}
   - component: {fileID: 1419897681}
   - component: {fileID: 1419897677}
+  - component: {fileID: 1419897682}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -988,26 +988,6 @@ MonoBehaviour:
   onUnitDestroyed:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &1419897678
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1419897676}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5eb3b55f90bf04742b0174d9395f10ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  terrainLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  unitLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  unitSpacing: 1
-  formationSpread: 7
 --- !u!114 &1419897679
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1057,6 +1037,24 @@ MonoBehaviour:
   markerDuration: 1
   fadeSpeed: 2
   hoverHeight: 0.1
+--- !u!114 &1419897682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1419897676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f865fc3ddf6e4da98e7deae36c42532, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  terrainLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  unitLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &1539453279
 GameObject:
   m_ObjectHideFlags: 0
