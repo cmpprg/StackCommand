@@ -8,7 +8,7 @@ public class UnitAttackState : UnitBaseState
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
-        
+
         // Check range immediately on entering the state
         if (controller.TargetUnit != null)
         {
@@ -55,6 +55,11 @@ public class UnitAttackState : UnitBaseState
 
     private void PerformAttack()
     {
+        // Very simple way to stop the unit at the moment of attack
+        // This ensures that the unit attacks from the greatest possible distance
+        // We can probably make this more precise, but it's good enough for now
+        agent.isStopped = true;
+
         if (controller.TargetUnit != null)
         {
             controller.TargetUnit.TakeDamage(unit.AttackDamage);
