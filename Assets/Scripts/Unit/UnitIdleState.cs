@@ -5,8 +5,6 @@ public class UnitIdleState : UnitBaseState
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
-
-        Debug.Log("UnitIdleState#OnStateEnter");
         
         if (agent != null)
         {
