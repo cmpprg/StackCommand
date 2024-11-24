@@ -16,6 +16,6 @@ public class UnitIdleState : UnitBaseState
         
         // Reset any ongoing actions in Unit/Controller
         // unit.EndAttack(); // Ensure no lingering attack state
-        // controller.Stop(); // Reset controller states
+        controller.Stop(); // Reset controller states
     }
 }
