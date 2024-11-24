@@ -40,9 +40,14 @@ public class UnitAttackState : UnitBaseState
     {
         if (controller.TargetUnit != null)
         {
-            controller.TargetUnit.TakeDamage(10f); // Fixed damage for now
-            
+            // Deal damage
+            controller.TargetUnit.TakeDamage(unit.AttackDamage);
+            // Show laser beam effect
             ShowLaserBeam(controller.TargetUnit);
+            // Play attack sound
+            // TODO: Add sound effect
+            // Play hit animation
+            // TODO: Add hit animation
         }
     }
 

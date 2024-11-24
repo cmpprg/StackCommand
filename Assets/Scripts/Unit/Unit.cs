@@ -23,6 +23,7 @@ public class Unit : MonoBehaviour
     }
 
     public float AttackRange => attackRange;
+    public float AttackDamage => attackDamage;
     
     public void TakeDamage(float damage)
     {
