@@ -16,11 +16,13 @@ private Animator animator;
 
     public void Attack(Unit target)
     {
+        Debug.Log("Attack: " + target);
         if (target == null || target == unit) return;
         
         TargetUnit = target;
         
         animator.SetBool("IsAttacking", true);
+        Debug.Log("IsAttacking: " + animator.GetBool("IsAttacking"));
         animator.SetBool("IsMoving", false);
         animator.SetBool("IsFollowing", false);
     }
@@ -30,25 +32,25 @@ private Animator animator;
         if (target == null || target == unit) return;
         
         TargetUnit = target;
+        animator.SetBool("IsFollowing", true);
         animator.SetBool("IsAttacking", false);
         animator.SetBool("IsMoving", false);
-        animator.SetBool("IsFollowing", true);
     }
 
     public void MoveTo(Vector3 position)
     {
         TargetPosition = position;
         TargetUnit = null;
+        animator.SetBool("IsMoving", true);
         animator.SetBool("IsAttacking", false);
         animator.SetBool("IsFollowing", false);
-        animator.SetBool("IsMoving", true);
     }
 
     public void Stop()
     {
         TargetUnit = null;
+        animator.SetBool("IsAttacking", false);
         animator.SetBool("IsMoving", false);
         animator.SetBool("IsFollowing", false);
-        animator.SetBool("IsAttacking", false);
     }
 }

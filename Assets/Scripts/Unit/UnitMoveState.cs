@@ -34,7 +34,7 @@ public class UnitMoveState : UnitBaseState
         // Check if we've reached our destination
         if (IsPathValid && HasReachedDestination())
         {
-            animator.SetBool("IsMoving", false);
+            controller.Stop();
             return;
         }
 
@@ -42,7 +42,7 @@ public class UnitMoveState : UnitBaseState
         if (!IsPathValid)
         {
             Debug.LogWarning("Invalid path detected in MoveState");
-            animator.SetBool("IsMoving", false);
+            controller.Stop();
             return;
         }
     }

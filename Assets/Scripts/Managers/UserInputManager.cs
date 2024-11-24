@@ -45,9 +45,7 @@ public class UserInputManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1)) // Right click
         {
-            Debug.Log("UserInputManager#HandleUnitCommand - Right click");
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-            Debug.Log("UserInputManager#HandleUnitCommand - Ray: " + ray);
             ProcessUnitCommand(ray);
         }
     }

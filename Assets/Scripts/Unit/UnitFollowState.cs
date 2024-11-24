@@ -25,7 +25,7 @@ public class UnitFollowState : UnitBaseState
     {
         if (agent == null || controller.TargetUnit == null)
         {
-            animator.SetBool("IsFollowing", false);
+            controller.Stop();
             return;
         }
 
@@ -41,10 +41,10 @@ public class UnitFollowState : UnitBaseState
         {
             float distanceToTarget = Vector3.Distance(animator.transform.position, controller.TargetUnit.transform.position);
             
+            // Attack the target if in range
             if (distanceToTarget <= unit.AttackRange)
             {
-                animator.SetBool("IsFollowing", false);
-                animator.SetBool("IsAttacking", true);
+                controller.Attack(controller.TargetUnit);
             }
             lastRangeCheck = Time.time;
         }
@@ -55,15 +55,6 @@ public class UnitFollowState : UnitBaseState
         if (controller.TargetUnit != null)
         {
             agent.SetDestination(controller.TargetUnit.transform.position);
-        }
-    }
-
-    public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        Debug.Log($"[{Time.time}] Exiting FOLLOW State");
-        if (agent != null && !animator.GetBool("IsAttacking"))
-        {
-            agent.isStopped = true;
         }
     }
 }
