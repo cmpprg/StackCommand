@@ -20,9 +20,9 @@ private Animator animator;
         
         TargetUnit = target;
         
+        animator.SetBool("IsAttacking", true);
         animator.SetBool("IsMoving", false);
         animator.SetBool("IsFollowing", false);
-        animator.SetBool("IsAttacking", true);
     }
 
     public void Follow(Unit target)
