@@ -5,19 +5,15 @@ public class UnitIdleState : UnitBaseState
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
-        Debug.Log("UnitIdleState#OnStateEnter");
+        
         if (agent != null)
         {
             agent.isStopped = true;
+            agent.ResetPath(); // Clear any remaining path
         }
-    }
-
-    public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        // Check for new commands or state changes
-        if (controller.IsMoving || controller.IsAttacking)
-        {
-            return;
-        }
+        
+        // Reset any ongoing actions in Unit/Controller
+        // unit.EndAttack(); // Ensure no lingering attack state
+        // controller.Stop(); // Reset controller states
     }
 }
