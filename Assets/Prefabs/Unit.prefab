@@ -133,6 +133,7 @@ MonoBehaviour:
   attackRange: 5
   attackDamage: 10
   maxHealth: 100
+  laserBeamPrefab: {fileID: 5991994672471693365, guid: 586aca0f8249d4d41be026a6b61c3f1b, type: 3}
 --- !u!114 &1324079161657320751
 MonoBehaviour:
   m_ObjectHideFlags: 0

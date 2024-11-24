@@ -4,6 +4,7 @@ public class UnitAttackState : UnitBaseState
 {
     private float attackCooldown = 1f;
     private float currentCooldown = 0f;
+    private LaserBeamEffect laserBeamPrefab;
 
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -41,7 +42,18 @@ public class UnitAttackState : UnitBaseState
         {
             controller.TargetUnit.TakeDamage(10f); // Fixed damage for now
             
-            // Optional: Add visual feedback here
+            ShowLaserBeam(controller.TargetUnit);
+        }
+    }
+
+    private void ShowLaserBeam(Unit target)
+    {
+        if (unit.LaserBeamPrefab != null)
+        {
+            Vector3 targetPoint = target.transform.position;
+
+            LaserBeamEffect laser = Instantiate(unit.LaserBeamPrefab);
+            laser.ShowBeam(agent.transform, targetPoint);
         }
     }
 }
