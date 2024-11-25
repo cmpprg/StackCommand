@@ -11,14 +11,20 @@ public class Unit : MonoBehaviour
     [SerializeField] private LaserBeamEffect laserBeamPrefab;
     
     private float currentHealth;
+    private TeamComponent teamComponent;
 
     private void Awake()
     {
         currentHealth = maxHealth;
+        teamComponent = GetComponent<TeamComponent>();
 
         if (laserBeamPrefab == null)
         {
             Debug.LogError("Unit is missing a LaserBeamEffect prefab reference!");
+        }
+        if (teamComponent == null)
+        {
+            Debug.LogError($"Unit {gameObject.name} requires a TeamComponent!");
         }
     }
 
@@ -37,4 +43,13 @@ public class Unit : MonoBehaviour
     public float GetHealthPercent() => currentHealth / maxHealth;
 
     public LaserBeamEffect LaserBeamPrefab => laserBeamPrefab;
+
+    public bool CanTarget(Unit otherUnit)
+    {
+        if (otherUnit == null || otherUnit == this)
+            return false;
+
+        TeamComponent otherTeam = otherUnit.GetComponent<TeamComponent>();
+        return teamComponent.IsHostileTo(otherTeam);
+    }
 }

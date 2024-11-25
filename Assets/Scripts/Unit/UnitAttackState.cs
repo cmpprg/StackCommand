@@ -30,6 +30,12 @@ public class UnitAttackState : UnitBaseState
             return;
         }
 
+        if (!unit.CanTarget(controller.TargetUnit))
+        {
+            controller.Stop();
+            return;
+        }
+
         // Update facing direction
         Vector3 directionToTarget = (controller.TargetUnit.transform.position - animator.transform.position).normalized;
         animator.transform.rotation = Quaternion.LookRotation(directionToTarget);

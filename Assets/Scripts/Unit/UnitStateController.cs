@@ -30,6 +30,8 @@ public class UnitStateController : MonoBehaviour
     public void Attack(Unit target)
     {
         if (target == null || target == unit) return;
+        // Add team targeting check
+        if (!unit.CanTarget(target)) return;
         
         TargetUnit = target;
         ResetAllTriggers();
