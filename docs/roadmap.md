@@ -15,11 +15,14 @@ TBD
 1. ~~Create basic unit prefab with properties~~
 2. ~~Implement unit movement and pathfinding~~
 3. ~~Create unit selection system~~
-4. Implement basic combat system
+4. ~~Implement basic combat system~~
 5. Add unit generation timing system
+   - This can not be done until buildings.
 6. Create unit stacking mechanics
+   - This can not be done until buildings.
 7. Implement stack-based combat modifications
 8. Add visual feedback for unit states
+  - Won't do
 
 ## Epic 3: Building System
 ### Stories
