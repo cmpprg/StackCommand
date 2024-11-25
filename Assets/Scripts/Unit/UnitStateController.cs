@@ -5,6 +5,7 @@ public class UnitStateController : MonoBehaviour
     private static readonly int MoveTrigger = Animator.StringToHash("Move");
     private static readonly int AttackTrigger = Animator.StringToHash("Attack");
     private static readonly int FollowTrigger = Animator.StringToHash("Follow");
+    private static readonly int StopTrigger = Animator.StringToHash("Stop");
     
     private Animator animator;
     private Unit unit;
@@ -48,7 +49,7 @@ public class UnitStateController : MonoBehaviour
     {
         TargetUnit = null;
         ResetAllTriggers();
-        // No need to set a stop trigger - will default to idle
+        animator.SetTrigger(StopTrigger);
     }
     
     private void ResetAllTriggers()
@@ -56,5 +57,6 @@ public class UnitStateController : MonoBehaviour
         animator.ResetTrigger(MoveTrigger);
         animator.ResetTrigger(AttackTrigger);
         animator.ResetTrigger(FollowTrigger);
+        animator.ResetTrigger(StopTrigger);
     }
 }

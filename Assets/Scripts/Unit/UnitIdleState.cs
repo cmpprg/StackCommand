@@ -6,8 +6,6 @@ public class UnitIdleState : UnitBaseState
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
 
-        Debug.Log("UnitIdleState#OnStateEnter");
-        
         if (agent != null)
         {
             agent.isStopped = true;

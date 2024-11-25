@@ -16,7 +16,6 @@ public class UserInputManager : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("UserInputManager#Start");
         // Initialize components
         mainCamera = Camera.main;
         selectionManager = GetComponent<SelectionManager>();
@@ -32,8 +31,6 @@ public class UserInputManager : MonoBehaviour
             Debug.LogError("UserInputManager requires a SelectionManager!");
         if (!movementMarker)
             Debug.LogError("UserInputManager requires a MovementMarker component!");
-        // if (!combatManager)
-        //     Debug.LogError("UserInputManager requires a CombatManager component!");
     }
 
     private void Update()
